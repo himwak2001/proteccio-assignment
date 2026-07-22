@@ -1,4 +1,4 @@
-package com.proteccio.repository;
+package com.proteccio.model;
 
 import jakarta.persistence.*;
 import lombok.*;

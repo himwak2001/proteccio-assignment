@@ -1,4 +1,4 @@
-package com.proteccio.repository;
+package com.proteccio.model;
 
 public enum SensitivityTag {
     NONE,
