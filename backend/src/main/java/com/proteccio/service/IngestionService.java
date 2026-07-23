@@ -18,6 +18,16 @@ import java.util.Map;
 
 @Service
 public class IngestionService {
+
+    /**
+     * Reads an uploaded file and returns its headers + rows as plain strings.
+     * Picks the parser based on file extension - falls back to CSV if we don't
+     * recognize it, since that's the more common case for this assignment.
+     *
+     * @param file the multipart file from the upload request
+     * @return headers and rows, not yet type-checked or classified
+     * @throws IOException if the file can't be read (corrupt file, bad encoding, etc)
+     */
     public ParsedDataset parse(MultipartFile file) throws IOException {
         String filename = file.getOriginalFilename() == null ? "" : file.getOriginalFilename().toLowerCase();
 

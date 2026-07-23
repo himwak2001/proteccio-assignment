@@ -14,6 +14,17 @@ public class ClassificationService {
 
     private static final double SAMPLE_MATCH_THRESHOLD = 0.6;
 
+    /**
+     * Decides if a column looks like it holds sensitive data.
+     * Checks the header name first since that's usually good enough (a column
+     * called "email" is almost certainly an email column). Falls back to
+     * checking the actual values for columns with vague names like "contact"
+     * or "info" where the header alone doesn't tell us much.
+     *
+     * @param columnName   the header text for this column
+     * @param sampleValues a handful of non-blank values from the column, used for the fallback check
+     * @return the sensitivity tag that best fits, or NONE if nothing matched
+     */
     public SensitivityTag classify(String columnName, List<String> sampleValues) {
         String header = columnName == null ? "" : columnName.toLowerCase().trim();
 
@@ -30,12 +41,9 @@ public class ClassificationService {
             return SensitivityTag.FINANCIAL;
 
         if (header.endsWith("_id") || header.equals("id")) {
-            // don't flag every surrogate primary key as an ID number - only if
-            // the actual values look like a real identifier (aadhaar, passport etc)
             if (matchesSample(sampleValues, ID_VALUE)) return SensitivityTag.ID_NUMBER;
         }
 
-        // header gave no hint - check if the values themselves look sensitive
         if (matchesSample(sampleValues, EMAIL_VALUE)) return SensitivityTag.EMAIL;
         if (matchesSample(sampleValues, PHONE_VALUE) && looksNumericPhone(sampleValues))
             return SensitivityTag.PHONE_NUMBER;
@@ -57,7 +65,6 @@ public class ClassificationService {
         return (double) matches / nonBlank.size() >= SAMPLE_MATCH_THRESHOLD;
     }
 
-    // the loose phone regex can also match short numeric ids, so double check digit count
     private boolean looksNumericPhone(List<String> sampleValues) {
         return sampleValues.stream()
                 .filter(v -> v != null && !v.isBlank())

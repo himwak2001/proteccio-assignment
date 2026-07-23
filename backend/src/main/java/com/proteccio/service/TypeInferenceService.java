@@ -24,6 +24,15 @@ public class TypeInferenceService {
             DateTimeFormatter.ofPattern("dd-MM-yyyy"),
     };
 
+    /**
+     * Looks at a column's values and guesses what type it is. Uses a 90%
+     * majority threshold on purpose - if 9 out of 10 values look like integers
+     * we call it INTEGER and let the last one show up as an invalid value later,
+     * rather than downgrading the whole column to STRING over one bad row.
+     *
+     * @param columnValues all values in this column, including blanks
+     * @return the inferred type, or EMPTY if there's nothing to go on
+     */
     public DataType inferType(List<String> columnValues) {
         List<String> nonBlank = columnValues.stream().filter(v -> v != null && !v.isBlank()).toList();
         if (nonBlank.isEmpty()) return DataType.EMPTY;
@@ -43,7 +52,14 @@ public class TypeInferenceService {
         return DataType.STRING;
     }
 
-    // used later by the quality checker to flag values that don't fit the type we picked
+    /**
+     * Checks a single value against a type we've already decided on for its column.
+     * Used by the quality checker to count how many values don't actually fit.
+     *
+     * @param value single cell value (can be null/blank - treated as valid, missing is a separate check)
+     * @param type the type this column was inferred to be
+     * @return true if the value fits the type, false if it should count as invalid
+     */
     public boolean matchesType(String value, DataType type) {
         if (value == null || value.isBlank()) return true; // blanks are handled separately as "missing"
         return switch (type) {
@@ -62,6 +78,7 @@ public class TypeInferenceService {
                 return true;
             } catch (Exception ignored) {
                 // not this format, try the next one
+                return false;
             }
         }
         return false;

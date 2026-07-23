@@ -44,6 +44,15 @@ public class DatasetService {
         this.valueService = valueService;
     }
 
+    /**
+     * Runs the full pipeline on a newly uploaded file: parse it, figure out each
+     * column's type, classify anything sensitive, run the quality checks, and
+     * work out trust + activity status. Saves the finished Dataset at the end.
+     *
+     * @param file the uploaded CSV/XLSX
+     * @return the saved dataset with all columns and scores filled in
+     * @throws IOException if the file can't be parsed
+     */
     @Transactional
     public Dataset ingestAndCatalog(MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
@@ -116,10 +125,19 @@ public class DatasetService {
         return datasetRepository.save(dataset);
     }
 
+    /**
+     * @return every dataset in the catalog, for the dashboard list view
+     */
     public List<Dataset> listAll() {
         return datasetRepository.findAll();
     }
 
+    /**
+     * Fetches a dataset for the detail page and counts it as a view.
+     *
+     * @param id dataset id
+     * @return the dataset with its columns
+     */
     @Transactional
     public Dataset getDetailAndRecordView(Long id) {
         Dataset dataset = datasetRepository.findById(id)
@@ -128,6 +146,15 @@ public class DatasetService {
         return datasetRepository.save(dataset);
     }
 
+    /**
+     * Lets a user manually correct a column's sensitivity tag. Also recalculates
+     * the trust score since classification completeness just changed.
+     *
+     * @param datasetId which dataset the column belongs to
+     * @param columnId which column to update
+     * @param newTag the tag the user picked
+     * @return the updated column
+     */
     @Transactional
     public ColumnMeta overrideColumnTag(Long datasetId, Long columnId, SensitivityTag newTag) {
         Dataset dataset = datasetRepository.findById(datasetId)

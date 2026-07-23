@@ -8,6 +8,17 @@ import java.util.List;
 
 @Service
 public class TrustService {
+    /**
+     * Trust score = how much can we rely on this data. Mostly driven by quality
+     * (70%), with the rest coming from how much of it has actually been reviewed
+     * for sensitive content (30%). A dataset that's never been classified is
+     * treated as less trustworthy even if the data itself is clean, because we
+     * don't actually know if it's hiding unflagged PII.
+     *
+     * @param qualityScore the dataset's quality score, already computed
+     * @param columns      all columns for this dataset, used to check classification status
+     * @return trust score, 0-100
+     */
     public double computeTrustScore(double qualityScore, List<ColumnMeta> columns) {
         if (columns.isEmpty()) return qualityScore * 0.7;
 

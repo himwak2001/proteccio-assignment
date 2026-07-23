@@ -47,13 +47,7 @@ public class DatasetController {
             @PathVariable Long columnId,
             @Valid @RequestBody TagOverrideRequest request) {
 
-        SensitivityTag tag;
-        try {
-            tag = SensitivityTag.valueOf(request.getSensitivityTag().toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Unknown sensitivity tag: " + request.getSensitivityTag());
-        }
-
+        SensitivityTag tag = SensitivityTag.valueOf(request.getSensitivityTag().toUpperCase());
         ColumnMeta updated = datasetService.overrideColumnTag(datasetId, columnId, tag);
         return ResponseEntity.ok(ColumnDetailDto.from(updated));
     }
