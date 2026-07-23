@@ -8,9 +8,9 @@ Built for the Proteccio Data Full Stack Developer assignment.
 
 ## Live links
 
-- Frontend: _TODO_
-- Backend API: _TODO_
-- Repo: _TODO_
+- Frontend: https://proteccio-frontend-blond.vercel.app/
+- Backend API: https://proteccio-backend.onrender.com
+- Repo: https://github.com/himwak2001/proteccio-assignment.git
 
 > Free-tier hosting sleeps after inactivity - first request after idle can take
 > 20-30 seconds to wake up. Expected, not a bug.
