@@ -3,9 +3,9 @@ spring:
     name: datagov-dashboard
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/datagov
-    username: root
-    password: root
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     hibernate:
@@ -24,7 +24,7 @@ spring:
 
 app:
   cors:
-    allowed-origins: http://localhost:5173
+    allowed-origins: ${FRONTEND_ORIGIN}
 
 server:
   port: 8080
