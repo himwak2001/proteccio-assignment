@@ -1,0 +1,11 @@
+employee_id,full_name,email,phone,department,date_of_birth,salary,active
+1001,John Smith,john.smith@company.com,+1-202-555-0143,Engineering,1990-04-12,95000,true
+1002,Jane Doe,jane.doe@company.com,+1-202-555-0198,Marketing,1988-11-02,82000,true
+1003,Carlos Ruiz,carlos.ruiz@company.com,+1-202-555-0110,Engineering,1993-07-23,98000,true
+1004,Aisha Khan,aisha.khan@company.com,+1-202-555-0177,Finance,1985-01-30,105000,true
+1005,Wei Chen,wei.chen@company.com,+1-202-555-0166,Engineering,1991-09-14,97000,false
+1006,Priya Nair,priya.nair@company.com,+1-202-555-0122,HR,1994-03-08,76000,true
+1007,Tom Becker,tom.becker@company.com,+1-202-555-0134,Sales,1987-06-19,88000,true
+1008,Maria Silva,maria.silva@company.com,+1-202-555-0155,Marketing,1992-12-25,81000,true
+1009,Sam O'Brien,sam.obrien@company.com,+1-202-555-0188,Finance,1989-08-04,102000,true
+1010,Yuki Tanaka,yuki.tanaka@company.com,+1-202-555-0199,Engineering,1995-02-17,93000,true
